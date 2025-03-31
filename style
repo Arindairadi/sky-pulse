@@ -1,0 +1,77 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.5s ease-in-out; /* Smooth transition for background changes */
+  background-image: url(clear.jpg);
+}
+
+#app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background for better readability */
+  border-radius: 10px;
+}
+
+/* Welcome Message Styles */
+#welcome-message {
+  font-size: 1.2em;
+  margin: 10px 0;
+  font-style: italic;
+}
+
+/* Location and Statement Styles */
+#location {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+#statement {
+  font-size: 1.1em;
+  font-style: italic;
+  margin: 10px 0;
+}
+
+/* Search Bar Styles */
+input {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  margin-right: 10px;
+}
+
+button {
+  padding: 10px;
+  background-color: #00509E;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #003f7a;
+}
+
+/* Weather Info Styles */
+#weather-info {
+  margin-top: 20px;
+}
+
+#weather-info h2 {
+  margin-bottom: 10px;
+}
+
+#weather-info p {
+  margin: 5px 0;
+}
