@@ -210,6 +210,10 @@
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
         }
 
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+
         .search-icon {
             position: absolute;
             left: 1rem;
@@ -462,7 +466,6 @@
 
         /* Footer */
         footer {
-            text-align: center;
             padding: 2rem;
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;
@@ -470,11 +473,25 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1.5rem;
+            }
+        }
+
         .footer-links {
             display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1rem;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .footer-links a {
@@ -486,6 +503,50 @@
         .footer-links a:hover {
             color: white;
             text-decoration: underline;
+        }
+
+        .developer-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            backdrop-filter: blur(10px);
+        }
+
+        .developer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .developer-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .developer-details h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: white;
+        }
+
+        .developer-details p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         /* Weather Background Effects */
@@ -542,6 +603,11 @@
             .map-container {
                 min-height: 400px;
             }
+
+            .developer-info {
+                flex-direction: column;
+                text-align: center;
+            }
         }
 
         /* Location Display */
@@ -565,6 +631,20 @@
             font-size: 1rem;
             font-weight: 500;
             color: var(--dark);
+        }
+
+        /* Developer Avatar Placeholder */
+        .avatar-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -697,14 +777,43 @@
         
         <!-- Footer -->
         <footer>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">API Documentation</a>
-                <a href="#">Contact Support</a>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 600;">About LiveMap Weather</h4>
+                    <p style="margin-bottom: 1rem; line-height: 1.6;">LiveMap Weather provides real-time location tracking and weather intelligence with accurate forecasts and interactive maps.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 style="color: white; margin-bottom: 1rem; font-weight: 600;">Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                        <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
+                        <a href="#"><i class="fas fa-code"></i> API Documentation</a>
+                        <a href="#"><i class="fas fa-envelope"></i> Contact Support</a>
+                        <a href="#"><i class="fas fa-question-circle"></i> Help Center</a>
+                    </div>
+                </div>
+                
+                <div class="developer-info">
+                    <div class="developer-avatar">
+                        <div class="avatar-placeholder">AI</div>
+                        <!-- Uncomment below and replace with actual image if available -->
+                        <!-- <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Arinda Iradi"> -->
+                    </div>
+                    <div class="developer-details">
+                        <h4>Arinda Iradi</h4>
+                        <p>Lead Developer & Creator</p>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem; color: rgba(255, 255, 255, 0.8);">
+                            Full Stack Developer & UI/UX Designer
+                        </p>
+                    </div>
+                </div>
             </div>
-            <p>LiveMap Weather &copy; 2023 | Real-time location and weather intelligence platform</p>
-            <p>Weather data provided by OpenWeatherMap | Map data from OpenStreetMap</p>
+            
+            <div class="copyright">
+                <p>© 2023 LiveMap Weather. All rights reserved. Weather data provided by OpenWeatherMap | Map data from OpenStreetMap</p>
+                <p style="margin-top: 0.5rem; font-weight: 600;">Developed with ❤️ by Arinda Iradi</p>
+            </div>
         </footer>
     </div>
 
