@@ -3,32 +3,690 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SkyPulse</title>
-  <link rel="stylesheet" href="style.css">
+  <title>SkyPulse | Real-Time Weather Intelligence</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <style>
-    body{
-      background-image: url(clounds.jpg);
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
+    :root {
+      --primary-blue: #2563eb;
+      --secondary-blue: #3b82f6;
+      --accent-blue: #60a5fa;
+      --dark-blue: #1e40af;
+      --light-blue: #dbeafe;
+      --sky-gradient: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+      --dark-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --text-dark: #1e293b;
+      --text-light: #64748b;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 20px 50px -12px rgba(0, 0, 0, 0.25);
+      --radius: 16px;
+      --radius-sm: 8px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--sky-gradient);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated background clouds */
+    .cloud-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.7;
+      overflow: hidden;
+    }
+
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+      animation: float 40s infinite linear;
+    }
+
+    .cloud:before, .cloud:after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+    }
+
+    .cloud-1 {
+      width: 300px;
+      height: 100px;
+      top: 10%;
+      left: -300px;
+      animation-delay: 0s;
+    }
+
+    .cloud-1:before {
+      width: 100px;
+      height: 100px;
+      top: -50px;
+      left: 50px;
+    }
+
+    .cloud-1:after {
+      width: 150px;
+      height: 150px;
+      top: -70px;
+      left: 120px;
+    }
+
+    .cloud-2 {
+      width: 400px;
+      height: 120px;
+      top: 25%;
+      right: -400px;
+      animation-delay: 10s;
+      animation-duration: 50s;
+    }
+
+    .cloud-2:before {
+      width: 120px;
+      height: 120px;
+      top: -60px;
+      left: 70px;
+    }
+
+    .cloud-2:after {
+      width: 180px;
+      height: 180px;
+      top: -90px;
+      left: 160px;
+    }
+
+    .cloud-3 {
+      width: 250px;
+      height: 80px;
+      bottom: 20%;
+      left: -250px;
+      animation-delay: 5s;
+      animation-duration: 45s;
+    }
+
+    .cloud-3:before {
+      width: 80px;
+      height: 80px;
+      top: -40px;
+      left: 40px;
+    }
+
+    .cloud-3:after {
+      width: 120px;
+      height: 120px;
+      top: -60px;
+      left: 100px;
+    }
+
+    @keyframes float {
+      0% { transform: translateX(0) translateY(0); }
+      50% { transform: translateX(20px) translateY(-10px); }
+      100% { transform: translateX(calc(100vw + 500px)) translateY(0); }
+    }
+
+    /* Main container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-icon {
+      background: var(--dark-gradient);
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+    }
+
+    .logo-icon i {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .logo-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      background: linear-gradient(to right, #ffffff, var(--light-blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 0.25rem;
+      font-weight: 400;
+    }
+
+    /* Search bar */
+    .search-container {
+      display: flex;
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 500px;
+      margin-top: 1rem;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      background: rgba(255, 255, 255, 0.95);
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      color: var(--text-dark);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-light);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-blue);
+      font-size: 1.2rem;
+    }
+
+    .search-button {
+      background: var(--dark-gradient);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+
+    .search-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Main content */
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      flex: 1;
+    }
+
+    @media (min-width: 992px) {
+      .main-content {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+
+    /* Welcome card */
+    .welcome-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .welcome-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .welcome-icon {
+      background: var(--sky-gradient);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .welcome-icon i {
+      font-size: 1.8rem;
+      color: white;
+    }
+
+    .welcome-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+
+    .welcome-text {
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    .highlight {
+      background: linear-gradient(to right, var(--light-blue), #e0f2fe);
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      color: var(--dark-blue);
+    }
+
+    .location-permission {
+      background: rgba(37, 99, 235, 0.1);
+      border-left: 4px solid var(--primary-blue);
+      padding: 1rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .location-permission i {
+      color: var(--primary-blue);
+      font-size: 1.2rem;
+    }
+
+    /* Weather info card */
+    .weather-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .location-display {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .location-display i {
+      color: var(--primary-blue);
+      font-size: 1.5rem;
+    }
+
+    .location-text {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .statement-container {
+      background: var(--sky-gradient);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: white;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+    }
+
+    .statement-text {
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .weather-details {
+      flex: 1;
+    }
+
+    .weather-details h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .weather-info-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .weather-info-placeholder i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--accent-blue);
+      opacity: 0.7;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .footer-brand i {
+      color: var(--light-blue);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* Loading animation */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      
+      .search-container {
+        max-width: 100%;
+      }
+      
+      .welcome-card, .weather-card {
+        padding: 1.5rem;
+      }
+      
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .footer-links {
+        justify-content: center;
+      }
     }
   </style>
 </head>
-<body >
-  <div id="app">
-    <h1>SkyPulse</h1>
-    <div id="welcome-message">
-      SkyPulse, your reliable weather companion. <br> We've got you covered with real-time updates. 
-      Stay ahead of unpredictable weather patterns with accurate forecasts. <br>
-      <i>Please allow us to access your location for accurate data.</i>
-    </div><br>
-    <div id="location">Your Location: Loading...</div><br>
-    <div id="statement">Perfect weather for a calm and peaceful day.</div><br>
-    <input type="text" id="search-input" placeholder="Enter city name">
-    <button id="search-button">Search</button>
-    <div id="weather-info"></div>
-  </div><br>
-  <b>Regards IraxDev</b>
+<body>
+  <!-- Animated cloud background -->
+  <div class="cloud-bg">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-cloud-sun"></i>
+        </div>
+        <div>
+          <div class="logo-text">SkyPulse</div>
+          <div class="tagline">Real-Time Weather Intelligence</div>
+        </div>
+      </div>
+      
+      <div class="search-container">
+        <div class="search-wrapper">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="search-input" class="search-input" placeholder="Search for a city...">
+        </div>
+        <button id="search-button" class="search-button">
+          <i class="fas fa-search"></i>
+          <span>Search</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Welcome Section -->
+      <section class="welcome-card animate__animated animate__fadeIn">
+        <div class="welcome-header">
+          <div class="welcome-icon">
+            <i class="fas fa-cloud-sun-rain"></i>
+          </div>
+          <h2 class="welcome-title">Your Reliable Weather Companion</h2>
+        </div>
+        
+        <div class="welcome-text">
+          Welcome to <span class="highlight">SkyPulse</span>, your premier destination for accurate, real-time weather intelligence. 
+          We provide you with <span class="highlight">hyper-local forecasts</span>, detailed atmospheric insights, and predictive analytics 
+          to help you make informed decisions for your day.
+          <br><br>
+          Whether you're planning your commute, outdoor activities, or just curious about the atmospheric conditions, 
+          SkyPulse delivers <span class="highlight">precision weather data</span> with a beautiful, intuitive interface.
+        </div>
+        
+        <div id="welcome-message" class="location-permission">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <strong>Location Access Required</strong>
+            <div>Please allow location access for personalized, accurate weather data tailored to your exact position.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Weather Info Section -->
+      <section class="weather-card">
+        <div class="location-display">
+          <i class="fas fa-map-pin"></i>
+          <div id="location" class="location-text">Detecting your location...</div>
+        </div>
+        
+        <div id="statement-container" class="statement-container">
+          <div id="statement" class="statement-text">Preparing your personalized weather insights...</div>
+        </div>
+        
+        <div class="weather-details">
+          <h3><i class="fas fa-chart-line"></i> Weather Details</h3>
+          <div id="weather-info" class="weather-info-placeholder">
+            <i class="fas fa-cloud-sun"></i>
+            <div>Weather data will appear here once your location is detected</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-brand">
+        <i class="fas fa-satellite"></i>
+        <span>SkyPulse Weather Systems</span>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Us</a>
+        <a href="#">API Documentation</a>
+      </div>
+      
+      <div>
+        © 2023 SkyPulse. All rights reserved. | <b>Developed by IraxDev</b>
+      </div>
+    </footer>
+  </div>
+
   <script src="app.js"></script>
+  <script>
+    // Add some interactive elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchButton = document.getElementById('search-button');
+      const searchInput = document.getElementById('search-input');
+      
+      // Search functionality
+      searchButton.addEventListener('click', function() {
+        const city = searchInput.value.trim();
+        if (city) {
+          // This will be handled by your app.js
+          console.log('Searching for:', city);
+          searchInput.value = '';
+        }
+      });
+      
+      // Allow Enter key to search
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          searchButton.click();
+        }
+      });
+      
+      // Animate elements on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+          }
+        });
+      }, observerOptions);
+      
+      // Observe cards for animation
+      document.querySelectorAll('.welcome-card, .weather-card').forEach(card => {
+        observer.observe(card);
+      });
+    });
+  </script>
 </body>
 </html>
